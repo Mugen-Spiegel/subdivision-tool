@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  per_cubic_price: MyString
+  is_current_price: MyString
+  subdivision_id: MyString
+
+two:
+  per_cubic_price: MyString
+  is_current_price: MyString
+  subdivision_id: MyString

@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   # GET /users or /users.json
   def index
-    @users = User.all
+    @users = User.includes(:address).all
   end
 
   # GET /users/1 or /users/1.json
@@ -13,6 +13,7 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    @address = Subdivision.new
   end
 
   # GET /users/1/edit
@@ -21,11 +22,24 @@ class UsersController < ApplicationController
 
   # POST /users or /users.json
   def create
-    @user = User.new(user_params)
+    @user = User.create(
+      first_name: user_params[:first_name],
+      middle_name: user_params[:middle_name],
+      last_name: user_params[:last_name],
+      email: user_params[:email],
+      subdivision_id: Subdivision.first.id
+    )
+    Address.create!(
+      block: user_params[:block],
+      lot: user_params[:lot],
+      street: user_params[:street],
+      user_id: @user.id
+    )
 
     respond_to do |format|
-      if @user.save
-        format.html { redirect_to user_url(@user), notice: "User was successfully created." }
+      unless @user.nil?
+        @user
+        format.html { redirect_to users_path(@user), notice: "User was successfully created." }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -60,11 +74,20 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      @user = User.includes(:address, :subdivision).find(user_id)
     end
 
+    def user_id
+      params[:user_id] | params[:id]
+    end
+
+
+    def set_subdivision
+      @subdivision = Subdivision.find(params[:subdivision_id])
+    end
+    
     # Only allow a list of trusted parameters through.
     def user_params
-      params.require(:user).permit(:first_name, :middle_name, :last_name, :email, :password)
+      params.require(:user).permit(:first_name, :middle_name, :last_name, :email, :password, :block, :lot, :street)
     end
 end

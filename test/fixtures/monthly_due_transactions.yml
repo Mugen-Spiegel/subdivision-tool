@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: MyString
+  monthly_due_id: MyString
+  subdivision_id: MyString
+  is_paid: MyString
+
+two:
+  user_id: MyString
+  monthly_due_id: MyString
+  subdivision_id: MyString
+  is_paid: MyString

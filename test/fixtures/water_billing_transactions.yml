@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  current_reading: MyString
+  previous_reading: MyString
+  user_id: MyString
+  subdivision_id: MyString
+  water_billing_id: MyString
+
+two:
+  current_reading: MyString
+  previous_reading: MyString
+  user_id: MyString
+  subdivision_id: MyString
+  water_billing_id: MyString

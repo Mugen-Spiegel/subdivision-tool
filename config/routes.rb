@@ -1,5 +1,16 @@
 Rails.application.routes.draw do
+  resources :subdivisions do
+    member do
+      get "users"
+      get "water_billing_transaction"
+    end
+  end
+  resources :monthly_dues
+  resources :water_billings
   resources :users
+  resources :water_billing_transactions
+  resources :monthly_due_transactions
+  resources :addresses
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

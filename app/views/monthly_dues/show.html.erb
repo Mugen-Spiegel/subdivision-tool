@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @monthly_due %>
+
+<div>
+  <%= link_to "Edit this monthly due", edit_monthly_due_path(@monthly_due) %> |
+  <%= link_to "Back to monthly dues", monthly_dues_path %>
+
+  <%= button_to "Destroy this monthly due", @monthly_due, method: :delete %>
+</div>

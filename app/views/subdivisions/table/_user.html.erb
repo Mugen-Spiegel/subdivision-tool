@@ -1,0 +1,43 @@
+
+<div class="card text-center">
+  <div class="card-header">
+    <h5>Residence</h5>
+  </div>
+  <table id="users" class="table table-sm table-bordered table-hover table-inverse table-responsive table-dark table-striped">
+      <thead class="thead-inverse|thead-default">
+        <tr>
+          <th>First Name</th>
+          <th>Middle Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Block</th>
+          <th>Lot</th>
+          <th>Street</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+
+      <tbody>
+      
+      <% users.each do |user| %>
+        <tr>
+          <td><%= user.first_name%></td>
+          <td><%=user.middle_name %></td>
+          <td><%=user.last_name %></td>
+          <td><%=user.email %></td>
+          <td><%= user&.address&.block%></td>
+          <td><%=user&.address&.lot %></td>
+          <td><%=user&.address&.street %></td>
+          <td>
+            <%= link_to  "View Details", user_path(id: user.id),target: "_blank" %>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+
+  <div class="card-footer text-body-secondary">
+    2 days ago
+  </div>
+</div>

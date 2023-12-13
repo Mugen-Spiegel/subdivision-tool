@@ -1,0 +1,12 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Water billings</h1>
+
+<div id="water_billings">
+  <% @water_billings.each do |water_billing| %>
+    <%= render water_billing %>
+  
+  <% end %>
+</div>
+
+<%= link_to "New water billing", new_subdivision_water_billing_path %>

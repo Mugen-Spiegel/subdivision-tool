@@ -1,0 +1,3 @@
+class WaterBilling < ApplicationRecord
+
+end

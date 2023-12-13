@@ -1,0 +1,2 @@
+class MonthlyDue < ApplicationRecord
+end

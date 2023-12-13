@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Monthly due transactions</h1>
+
+<div id="monthly_due_transactions">
+  <% @monthly_due_transactions.each do |monthly_due_transaction| %>
+    <%= render monthly_due_transaction %>
+    <p>
+      <%= link_to "Show this monthly due transaction", monthly_due_transaction %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New monthly due transaction", new_monthly_due_transaction_path %>

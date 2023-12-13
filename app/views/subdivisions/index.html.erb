@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Subdivisions</h1>
+
+<div id="subdivisions">
+  <% @subdivisions.each do |subdivision| %>
+    <%= render subdivision %>
+    <p>
+      <%= link_to "Show this subdivision", subdivision %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New subdivision", new_subdivision_path %>
