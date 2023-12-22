@@ -10,9 +10,11 @@ class Subdivision < ApplicationRecord
     scope :all_users_with_latest_transactions, ->(year, month) { 
         if month > 1
             month -= 1
+        else
+            year = nil
+            month = nil
         end
-        puts month, "asdsa"
-        left_joins(:water_billing_transactions, :users)
+        left_joins(:users, :water_billing_transactions)
         .where("water_billing_transactions.year": year, "water_billing_transactions.month": month)
         .select("DISTINCT(water_billing_transactions.id) AS transaction_id,
             users.id AS user_id, 

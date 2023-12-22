@@ -61,7 +61,6 @@ user_params.each do |params|
         street: params[:street],
         user_id: user.id
       )
-      Balance.create(amount: 0, user:user)
 end
 
 MonthlyDue.create(amount: 150, is_current: "true", subdivision_id: 1)

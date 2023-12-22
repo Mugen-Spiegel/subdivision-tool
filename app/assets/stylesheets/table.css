@@ -10,3 +10,8 @@
 .sort-asc {
     border-bottom: 8px solid #fff;
 }
+
+.table-wrap {
+    height: 500px;
+    overflow-y: auto;
+  }

@@ -24,14 +24,14 @@ class WaterBillingTransactionRepository
         end
 
         unless self.first_name.empty?
-            self.where_like_clause += "users.first_name LIKE '%#{self.first_name}%'" 
+            self.where_like_clause += "users.first_name LIKE '%#{self.first_name.downcase}%'" 
         end
 
         unless self.last_name.empty?
             unless self.first_name.empty?
                 self.where_like_clause += " AND "
             end 
-            self.where_like_clause += "users.last_name LIKE '%#{self.last_name}%'" 
+            self.where_like_clause += "users.last_name LIKE '%#{self.last_name.downcase}%'" 
         end
 
         self.where_clause["water_billing_transactions.year"] = self.year
