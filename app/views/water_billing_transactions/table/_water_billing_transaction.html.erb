@@ -79,7 +79,9 @@
                                                 <% if bill.is_paid == WaterBillingTransaction::PAID %>
                                                     <td id= "balance_<%=bill.id %>"><%=money_format(0.0)%></td>
                                                 <% else  %>
-                                                   <td id= "balance_<%=bill.id %>"> <%= money_format((@total[:balance] += @unpaid_bills["#{bill.user_id}_#{bill.month}"])) %></td>
+                                                    <% @total[:balance] += @unpaid_bills["#{bill.user_id}_#{bill.month}"] %>
+                                                    
+                                                   <td id= "balance_<%=bill.id %>"> <%= money_format(@unpaid_bills["#{bill.user_id}_#{bill.month}"] ) %></td>
                                                 <% end %>
                                                 <td><%=bill.is_paid.titleize %></td>
                                                 <td><%=bill.created_at.to_date %></td>

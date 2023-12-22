@@ -1,5 +1,6 @@
 class WaterBilling < ApplicationRecord
 
+    has_many :water_billing_transactions, dependent: :destroy
     validates :month, presence: true
     validates :year, presence: true
     validates :mother_meter_current_reading, presence: true

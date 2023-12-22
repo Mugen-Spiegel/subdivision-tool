@@ -32,7 +32,6 @@ gem "cssbundling-rails"
 gem 'pagy', '~> 6.2'
 
 # Search with Sort
-gem 'ransack', '~> 4.0'
 
 gem 'byebug', '~> 11.1', '>= 11.1.3'
 

@@ -83,7 +83,7 @@ class WaterBillingTransactionRepository
         balance_transaction = {}
         monthly_due = MonthlyDueRepository.get_monthly_due(water_billing.subdivision_id)
         
-        subdivision_latest_transaction = Subdivision.all_users_with_latest_transactions.where(id: water_billing.subdivision_id)
+        subdivision_latest_transaction = Subdivision.all_users_with_latest_transactions(water_billing.year, water_billing.month).where(id: water_billing.subdivision_id)
         subdivision_latest_transaction.each do |transaction|
             water_billing_transactions << {
                 is_paid: WaterBillingTransaction::UN_PAID,
