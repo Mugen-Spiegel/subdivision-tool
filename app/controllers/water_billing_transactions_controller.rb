@@ -3,21 +3,25 @@ class WaterBillingTransactionsController < ApplicationController
 
   # GET /water_billing_transactions or /water_billing_transactions.json
   def index
-    water_billing_transactions = WaterBillingTransaction.all
-    render json: water_billing_transactions.to_json
-  end
-
-  # GET /water_billing_transactions/1 or /water_billing_transactions/1.json
-  def show
-  end
-
-  # GET /water_billing_transactions/new
-  def new
-    @water_billing_transaction = WaterBillingTransaction.new
-  end
-
-  # GET /water_billing_transactions/1/edit
-  def edit
+    @water_billing_transaction = WaterBillingTransactionRepository.new(params)
+    @total = {
+      "current_reading": 0,
+      "previous_reading": 0,
+      "consumption": 0,
+      "bill_amount": 0,
+      "monthly_due": 0,
+      "total_payable": 0,
+      "paid_amount": 0,
+      "balance": 0,
+    }
+    puts @total
+    if params[:query].present?
+      @unpaid_bills = @water_billing_transaction.get_monthly_unpaid_bills
+      @pagy, @water_billing_transaction = pagy((@water_billing_transaction.search_water_billing_transaction))
+    else
+      @unpaid_bills = @water_billing_transaction.get_monthly_unpaid_bills
+      @pagy, @water_billing_transaction = pagy((@water_billing_transaction.search_water_billing_transaction))
+    end
   end
 
   # POST /water_billing_transactions or /water_billing_transactions.json
@@ -37,14 +41,12 @@ class WaterBillingTransactionsController < ApplicationController
 
   # PATCH/PUT /water_billing_transactions/1 or /water_billing_transactions/1.json
   def update
-    respond_to do |format|
-      if @water_billing_transaction.update(water_billing_transaction_params)
-        format.html { redirect_to water_billing_transaction_url(@water_billing_transaction), notice: "Water billing transaction was successfully updated." }
-        format.json { render :show, status: :ok, location: @water_billing_transaction }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @water_billing_transaction.errors, status: :unprocessable_entity }
-      end
+    params = WaterBillingTransactionRepository.calculate_bill_amount(@water_billing_transaction, water_billing_transaction_params)
+    puts params, "asdasdsadsad"
+    if @water_billing_transaction.update(params)
+      render json: @water_billing_transaction.to_json, status: :ok
+    else
+      render json: @water_billing_transaction.errors, status: :unprocessable_entity 
     end
   end
 
@@ -66,6 +68,6 @@ class WaterBillingTransactionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def water_billing_transaction_params
-      params.require(:water_billing_transaction).permit(:current_reading, :previous_reading, :id, :subdivision_id, :water_billing_id)
+      params.require(:water_billing_transaction).permit(:current_reading, :previous_reading, :paid_amount, :id, :subdivision_id, :water_billing_id)
     end
 end

@@ -22,6 +22,25 @@ module ApplicationHelper
     end
 
     def month_list
-        Date::MONTHNAMES.compact
+        Date::MONTHNAMES.compact.unshift("Select month")
     end
+
+    def sort_column
+        [["MONTH", "water_billing_transactions.month"], [ "NAME", "users.first_name"], ["STATUS", "water_billing_transactions.is_paid"]]
+    end
+
+    def status_list
+        WaterBillingTransaction::STATUS.map do |s|
+            [s.capitalize(), s]
+        end.unshift("Select status")
+    end
+
+    def street_list
+        Subdivision.joins(:addresses).where("subdivisions.id": params[:subdivision_id]).select("addresses.street").pluck(:street).uniq.map{|s| s.capitalize}.compact.unshift("Select Street")
+    end
+
+    def money_format(value)
+        number_to_currency(value, unit:"₱")
+    end
+
 end

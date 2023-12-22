@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   resources :subdivisions do
     member do
       get "users"
-      get "water_billing_transaction"
+      get "water_billing"
     end
   end
   resources :monthly_dues

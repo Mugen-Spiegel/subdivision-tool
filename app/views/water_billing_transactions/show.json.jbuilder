@@ -1,1 +1,0 @@
-json.partial! "water_billing_transactions/water_billing_transaction", water_billing_transaction: @water_billing_transaction

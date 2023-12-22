@@ -10,21 +10,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_05_030826) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_18_103311) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "addresses", force: :cascade do |t|
     t.string "block"
     t.string "lot"
     t.string "street"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 
+  create_table "balances", force: :cascade do |t|
+    t.float "amount"
+    t.string "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "monthly_due_transactions", force: :cascade do |t|
     t.string "is_paid"
-    t.integer "user_id"
-    t.integer "monthly_due_id"
+    t.float "amount"
+    t.bigint "user_id"
+    t.string "year"
+    t.string "month"
+    t.bigint "monthly_due_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["monthly_due_id"], name: "index_monthly_due_transactions_on_monthly_due_id"
@@ -34,7 +47,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_05_030826) do
   create_table "monthly_dues", force: :cascade do |t|
     t.string "amount"
     t.string "is_current"
-    t.integer "subdivision_id"
+    t.bigint "subdivision_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["subdivision_id"], name: "index_monthly_dues_on_subdivision_id"
@@ -54,18 +67,24 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_05_030826) do
     t.string "last_name"
     t.string "email"
     t.string "password"
-    t.integer "subdivision_id"
+    t.bigint "subdivision_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["subdivision_id"], name: "index_users_on_subdivision_id"
   end
 
   create_table "water_billing_transactions", force: :cascade do |t|
-    t.string "current_reading"
-    t.string "previous_reading"
-    t.integer "user_id"
-    t.integer "subdivision_id"
-    t.integer "water_billing_id"
+    t.integer "current_reading", default: 0
+    t.integer "previous_reading", default: 0
+    t.integer "consumption", default: 0
+    t.string "is_paid"
+    t.float "bill_amount", default: 0.0
+    t.float "paid_amount", default: 0.0
+    t.integer "month"
+    t.integer "year"
+    t.bigint "user_id"
+    t.bigint "subdivision_id"
+    t.bigint "water_billing_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["subdivision_id"], name: "index_water_billing_transactions_on_subdivision_id"
@@ -74,11 +93,21 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_05_030826) do
   end
 
   create_table "water_billings", force: :cascade do |t|
-    t.string "per_cubic_price"
-    t.string "is_current_price"
-    t.integer "subdivision_id"
+    t.integer "month"
+    t.integer "year"
+    t.integer "mother_meter_current_reading", default: 0
+    t.integer "mother_meter_previous_reading", default: 0
+    t.integer "consumption", default: 0
+    t.string "is_paid"
+    t.float "bill_amount", default: 0.0
+    t.float "per_cubic_price", default: 0.0
+    t.float "paid_amount", default: 0.0
+    t.string "meter_image_link"
+    t.string "reciept_image_link"
+    t.bigint "subdivision_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["month", "year"], name: "index_water_billings_on_month_and_year", unique: true
     t.index ["subdivision_id"], name: "index_water_billings_on_subdivision_id"
   end
 

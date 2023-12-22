@@ -1,18 +1,8 @@
+<div class="card text-center">
+    <%= turbo_frame_tag 'water_bill_transaction' do %>
 
-<div class="container">
-  <p style="color: green"><%= notice %></p>
+      <%= render "water_billing_transactions/form/search_form" %> 
 
-  <h1>Water billing transactions</h1>
-
-  <div id="water_billing_transactions">
-    <% @water_billing_transactions.each do |water_billing_transaction| %>
-      <%= render water_billing_transaction %>
-      <p>
-        <%= link_to "Show this water billing transaction", water_billing_transaction %>
-      </p>
-    <% end %>
-  </div>
-
-  <%= link_to "New water billing transaction", new_water_billing_transaction_path %>
-
+      <%= render "water_billing_transactions/table/water_billing_transaction" , transaction: @water_billing_transaction %> 
+      <% end %>
 </div>

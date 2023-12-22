@@ -21,21 +21,8 @@ class WaterBillingsController < ApplicationController
 
   # POST /water_billings or /water_billings.json
   def create
-    @water_billing = WaterBilling.new(
-      per_cubic_price: water_billing_params[:per_cubic_price],
-      is_current_price: "true",
-      subdivision_id: params[:subdivision_id]
-    )
-
-    respond_to do |format|
-      if @water_billing.save
-        format.html { redirect_to subdivision_water_billings_path(@water_billing), notice: "Water billing was successfully created." }
-        format.json { render :show, status: :created, location: @water_billing }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @water_billing.errors, status: :unprocessable_entity }
-      end
-    end
+    @water_billing =  WaterBillingRepository.new(water_billing_params)
+    @water_billing.create
   end
 
   # PATCH/PUT /water_billings/1 or /water_billings/1.json
@@ -69,6 +56,12 @@ class WaterBillingsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def water_billing_params
-      params.require(:water_billing).permit(:per_cubic_price, :is_current_price)
+      params.require(:water_billing).permit(
+        :mother_meter_current_reading,
+        :subdivision_id,
+        :year,
+        :month,
+        :meter_image_link
+      )
     end
 end

@@ -33,6 +33,10 @@ gem 'pagy', '~> 6.2'
 
 # Search with Sort
 gem 'ransack', '~> 4.0'
+
+gem 'byebug', '~> 11.1', '>= 11.1.3'
+
+gem 'pg'
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 

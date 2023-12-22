@@ -1,5 +1,5 @@
 class SubdivisionsController < ApplicationController
-  before_action :set_subdivision, only: %i[ show edit update destroy users water_billing_transaction]
+  before_action :set_subdivision, only: %i[ show edit update destroy users]
   
   include Pagy::Backend
 
@@ -10,6 +10,7 @@ class SubdivisionsController < ApplicationController
 
   # GET /subdivisions/r1 or /subdivisions/1.json
   def show
+    @water_billing = WaterBilling.new
   end
 
   # GET /subdivisions/new
@@ -50,12 +51,13 @@ class SubdivisionsController < ApplicationController
     end
   end
 
-  def water_billing_transaction
-    @transaction = WaterBillingTransactionRepository.new(params)
+
+  def water_billing
+    @water_billing = WaterBillingRepository.new(params)
     if params[:query].present?
-      @pagy, @transaction = pagy((@transaction.search_water_billing_transaction))
+      @pagy, @water_billing = pagy((@water_billing.get_all))
     else
-      @pagy, @transaction = pagy((@transaction.search_water_billing_transaction))
+      @pagy, @water_billing = pagy((@water_billing.get_all))
     end
 
   end
