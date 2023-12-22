@@ -13,16 +13,19 @@ default: &default
 
 localhost:
   <<: *default
+  database: <%=Rails.application.credentials.DB_LOCAL_NAME%>
+  host: <%=Rails.application.credentials.DB_LOCAL_HOST%>
+  port: <%=Rails.application.credentials.DB_LOCAL_PORT%>
+  user: <%=Rails.application.credentials.DB_LOCAL_USER%>
+  password: <%=Rails.application.credentials.DB_LOCAL_PASS%>
+
+development:
+  <<: *default
   database: <%=Rails.application.credentials.DB_DEV_NAME%>
   host: <%=Rails.application.credentials.DB_DEV_HOST%>
   port: <%=Rails.application.credentials.DB_DEV_PORT%>
   user: <%=Rails.application.credentials.DB_DEV_USER%>
   password: <%=Rails.application.credentials.DB_DEV_PASS%>
-
-development:
-  <<: *default
-  database: railway
-  url: <%=Rails.application.credentials.DB_DEV_DATABASE_URL%>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
