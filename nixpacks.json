@@ -13,6 +13,6 @@
       "restartPolicyMaxRetries": 10
     },
     "start": {
-        "cmd": "bundle exec bin/rails db:create, bundle exec bin/rails db:migrate, bundle exec bin/rails db:seed, bundle exec bin/rails server -b 0.0.0.0 -p ${PORT:-3000} -e  $RAILS_ENV"
+        "cmd": "bundle exec bin/rails db:create, bundle exec bin/rails db:migrate, bundle exec bin/rails db:seed, bundle exec bin/rails server -e  $RAILS_ENV"
     }
   }
