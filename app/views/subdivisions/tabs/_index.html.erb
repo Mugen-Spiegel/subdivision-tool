@@ -11,12 +11,14 @@
     </li>
     </ul>
     <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" data-SubdivisionResidence-target="output" data-controller="SubdivisionResidence" data-action="SubdivisionResidence#fetch_residence" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+        <div class="tab-pane fade show active" data-controller="SubdivisionResidence" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+            <%= turbo_frame_tag "users", src: users_path({subdivision_id:params["id"]}), target: "_top" %> 
         </div>
-        <div class="tab-pane fade" data-WaterBillingTransactions-target="output" data-controller="WaterBillingTransactions" data-action="WaterBillingTransactions#fetch_water_bills_transaction" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+        <div class="tab-pane fade" data-controller="WaterBillingTransactions" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
             <%= turbo_frame_tag "water_bill_transaction", src: water_billing_transactions_path({subdivision_id:params["id"]}), target: "_top" %> 
         </div>
-        <div class="tab-pane fade" data-WaterBilling-target="output" data-controller="WaterBilling" data-action="WaterBilling#fetch_water_bills" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+        <div class="tab-pane fade" data-controller="WaterBilling" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+            <%= turbo_frame_tag "water_bill", src: water_billings_path({subdivision_id:params["id"]}), target: "_top" %> 
         </div>
     </div>
 </div>

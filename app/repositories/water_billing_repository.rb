@@ -1,13 +1,32 @@
 class WaterBillingRepository
     
-    attr_accessor :params, :subdivision, :last_transaction, :consumption
+    attr_accessor :params, :subdivision, :last_transaction, :consumption, :where_clause, :status, :month, :year
 
     def initialize(params)
         self.params = params
+        self.status = params["status"] || "Select status"
+        self.year = params["year_list"] || Time.now.year
+        self.month =  params["month"] || "Select month"
+        self.where_clause = {}
+    end
+
+    def search_water_billing
+        self.where_clause["subdivision_id"] = self.params["subdivision_id"]
+
+        self.where_clause["year"] = self.year
+
+        unless self.month == "Select month"
+            self.where_clause["month"] = Date::MONTHNAMES.index(self.params["month"])
+        end
+        
+        unless self.status == "Select status"
+            self.where_clause["is_paid"] = self.status
+        end
+        get_all
     end
 
     def get_all
-        WaterBilling.where(subdivision_id: self.params["id"]).select(
+        WaterBilling.where(self.where_clause).select(
             :month,
             :mother_meter_current_reading,
             :mother_meter_previous_reading,
@@ -25,7 +44,6 @@ class WaterBillingRepository
         get_all_residence
         ids_count = get_all_id.count
         get_last_bill
-        puts ids_count, "assasasadsda"
         WaterBilling.create(
             month: Date::MONTHNAMES.index(self.params["month"]),
             year: self.params["year"],
@@ -40,6 +58,7 @@ class WaterBillingRepository
     end
 
     def get_all_residence
+        puts self.params["subdivision_id"], "asdsaddsa"
         self.subdivision = Subdivision.all_users.find(self.params["subdivision_id"])
     end
 

@@ -1,9 +1,9 @@
+<div class="card text-center">
+    <%= turbo_frame_tag 'users' do %>
 
-<div class="container">
-    <p style="color: green"><%= notice %></p>
+        <%= render "users/form/search_form" %> 
+        <%= render "users/modal/add_residence", users: @users %>
+        <%= render "users/table/user", users: @users %>
 
-
-    <%= render "users/table/user", user: @user %>
-
-    <%= link_to "New user", new_user_path %>
+      <% end %>
 </div>

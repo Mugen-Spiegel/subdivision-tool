@@ -28,14 +28,15 @@ gem "jbuilder"
 
 gem "cssbundling-rails"
 
-# Pagination used
-gem 'pagy', '~> 6.2'
 
 # Search with Sort
 
 gem 'byebug', '~> 11.1', '>= 11.1.3'
 
 gem 'pg'
+
+# PDF generator
+gem 'prawn', '~> 2.4'
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 

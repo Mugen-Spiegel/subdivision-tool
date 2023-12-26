@@ -14,14 +14,8 @@ class WaterBillingTransactionsController < ApplicationController
       "paid_amount": 0,
       "balance": 0,
     }
-    puts @total
-    if params[:query].present?
       @unpaid_bills = @water_billing_transaction.get_monthly_unpaid_bills
-      @pagy, @water_billing_transaction = pagy((@water_billing_transaction.search_water_billing_transaction))
-    else
-      @unpaid_bills = @water_billing_transaction.get_monthly_unpaid_bills
-      @pagy, @water_billing_transaction = pagy((@water_billing_transaction.search_water_billing_transaction))
-    end
+      @water_billing_transaction = @water_billing_transaction.search_water_billing_transaction
   end
 
   # POST /water_billing_transactions or /water_billing_transactions.json
@@ -42,7 +36,6 @@ class WaterBillingTransactionsController < ApplicationController
   # PATCH/PUT /water_billing_transactions/1 or /water_billing_transactions/1.json
   def update
     params = WaterBillingTransactionRepository.calculate_bill_amount(@water_billing_transaction, water_billing_transaction_params)
-    puts params, "asdasdsadsad"
     if @water_billing_transaction.update(params)
       render json: @water_billing_transaction.to_json, status: :ok
     else

@@ -1,0 +1,59 @@
+<%= turbo_frame_tag 'water_bill_search', target:"_top" do %>
+    <div class="card text-center">
+        <%= turbo_frame_tag 'water_bill_table', data: {turbo_frame: "_top", remote:"true"} do %>
+            <div class="card-body overflow-scroll">
+                    <table class="table table-sm table-bordered table-hover table-inverse table-responsive  table-striped">
+                        <thead class="thead-inverse|thead-default">
+                            <tr>
+                                <th  class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    MONTH
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    CURRENT READING
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    PREVIOUS READING
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    CONSUMPTION
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    PRICE PER CUBIC
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    BILL AMOUNT
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    METER IMAGE
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    RECIEPT IMAGE
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    STATUS
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700">
+                                <% water_billings.each do |bill| %>
+                                    <tr>
+                                        <td><%=Date::MONTHNAMES[bill.month]%></td>
+                                        <td><%=bill.mother_meter_current_reading %></td>
+                                        <td><%=bill.mother_meter_previous_reading %></td>
+                                        <td><%=bill.consumption %></td>
+                                        <td><%=bill.per_cubic_price %></td>
+                                        <td><%=bill.bill_amount %></td>
+                                        <td><%=bill.meter_image_link %></td>
+                                        <td><%=bill.reciept_image_link %></td>
+                                        <td><%=bill.is_paid%></td>
+                                    </tr>
+                                <% end %>
+                        </tbody>
+                    </table>
+                   
+            </div>
+
+        
+        <% end %>
+    </div>
+<% end %>

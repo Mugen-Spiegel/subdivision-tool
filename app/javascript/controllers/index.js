@@ -15,3 +15,7 @@ application.register("MonthlyDueTransactions", MonthlyDueTransactionsController)
 
 import WaterBillingController from "./water_billing_controller"
 application.register("WaterBilling", WaterBillingController)
+
+
+import UsersController from "./users_controller"
+application.register("Users", UsersController)

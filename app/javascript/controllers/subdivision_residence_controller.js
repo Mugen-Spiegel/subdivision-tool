@@ -1,9 +1,9 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["output"]
+  static targets = ["output", "searchForm", "addForm"]
   connect() {
-    this.fetch_residence()
+    // this.fetch_residence()
   }
 
   fetch_residence() {
@@ -13,5 +13,13 @@ export default class extends Controller {
     .then((html) => {
       this.outputTarget.innerHTML = html
     })
+  }
+
+  search() {
+    this.searchFormTarget.requestSubmit()
+  }
+
+  add_new_residence() {
+    this.addFormTarget.requestSubmit()
   }
 }

@@ -157,5 +157,9 @@ class WaterBillingTransactionRepository
         end
         unpaid_bills
     end
+
+    def pdf_bill_details()
+        WaterBillingTransaction.user_total_unpaid_bill()
+    end
     
 end

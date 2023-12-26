@@ -1,0 +1,50 @@
+<div class="row">
+            <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newResidence">
+    Add Residence
+    </button>
+            <!-- Modal -->
+    <div class="modal fade" id="newResidence" tabindex="-1" aria-labelledby="newResidenceLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="newResidenceLabel">Water Billing</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <%= form_with(model: users, url: users_path, method: :post, data: { turbo_frame: "user_table" } ) do |form| %>
+                        <div class="form-row">
+                            <div class="form-group col">
+                                <%= form.label :first_name%>
+                                <%= form.text_field :first_name, {class:"form-control", placeholder:"First Name"} %>
+                            </div>
+                            <div class="form-group col">
+                                <%= form.label :middle_name %>
+                                <%= form.text_field :middle_name, {class:"form-control", placeholder:"Middle Name"} %>
+                            </div>
+                            <div class="form-group col">
+                                <%= form.label :last_name, style: "display: block" %>
+                                <%= form.text_field :last_name, {class:"form-control", placeholder:"Last Name"}%>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col">
+                            <%= form.label :block, style: "display: block" %>
+                            <%= form.text_field :block, {class:"form-control",  placeholder:"Block"} %>
+                            </div>
+                            <div class="form-group col">
+                            <%= form.label :lot, style: "display: block" %>
+                            <%= form.text_field :lot, {class:"form-control",  placeholder:"Lot"} %>
+                            </div>
+                            <div class="form-group col">
+                            <%= form.label :street, style: "display: block" %>
+                            <%= form.text_field :street,  {class:"form-control",  placeholder:"Street"} %>
+                            </div>
+                        </div>
+                        <%= form.submit "Save", {class:"btn btn-primary "}  %>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

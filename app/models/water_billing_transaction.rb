@@ -10,11 +10,19 @@ class WaterBillingTransaction < ApplicationRecord
     after_update -> { WaterBillingTransactionRepository.after_update_callback(self) }
 
 
-    scope :user_total_unpaid_bill, -> (user_id) do 
-        joins(:monthly_due_transaction)
+    scope :user_total_unpaid_bill_, -> (user_id) do 
+        joins(:monthly_due_transaction, :user, :subdivision, :addresses )
         .where(is_paid: [UN_PAID, PARTIAL], user_id: user_id)
         .select("
             water_billing_transactions.id,
+            CONCAT(users.first_name,' ', users.last_name) AS name,
+            CONCAT('Block ', addresses.block, ' Lot ', addresses.lot, ' ', addresses.street, ' Street') AS address,
+            water_billing_transactions.bill_amount,
+            water_billing_transactions.current_reading,
+            water_billing_transactions.previous_reading,
+            water_billing_transactions.consumption,
+            COALESCE(water_billing_transactions.bill_amount,0) AS basic_charge,
+            COALESCE(monthly_due_transactions.amount,0) + COALESCE(water_billing_transactions.bill_amount,0) AS total_payable,
             water_billing_transactions.user_id,
             water_billing_transactions.month,
             CASE 
@@ -24,6 +32,24 @@ class WaterBillingTransaction < ApplicationRecord
             END as bal
                 ")
         .distinct("water_billing_transactions.month")
+    end
+
+    scope :user_total_unpaid_bill, -> (user_id) do 
+        joins(:monthly_due_transaction, :user, :subdivision, :addresses )
+        .where(is_paid: [UN_PAID, PARTIAL], user_id: user_id)
+        .select("
+            water_billing_transactions.id,
+            water_billing_transactions.user_id,
+            water_billing_transactions.month,
+            SUM(CASE 
+                WHEN water_billing_transactions.is_paid='unpaid' THEN 
+                COALESCE(monthly_due_transactions.amount,0) + COALESCE(water_billing_transactions.bill_amount,0)
+                ELSE COALESCE(monthly_due_transactions.amount,0) + (COALESCE(water_billing_transactions.bill_amount,0) - COALESCE(water_billing_transactions.paid_amount,0)) 
+            END)as bal
+                ")
+        .group("water_billing_transactions.id")
+
+
     end
 
     

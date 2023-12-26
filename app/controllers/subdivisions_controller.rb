@@ -1,7 +1,6 @@
 class SubdivisionsController < ApplicationController
-  before_action :set_subdivision, only: %i[ show edit update destroy users]
+  before_action :set_subdivision, only: %i[ show edit update destroy]
   
-  include Pagy::Backend
 
   # GET /subdivisions or /subdivisions.json
   def index
@@ -9,9 +8,7 @@ class SubdivisionsController < ApplicationController
   end
 
   # GET /subdivisions/r1 or /subdivisions/1.json
-  def show
-    @water_billing = WaterBilling.new
-  end
+
 
   # GET /subdivisions/new
   def new
@@ -49,17 +46,6 @@ class SubdivisionsController < ApplicationController
         format.json { render json: @subdivision.errors, status: :unprocessable_entity }
       end
     end
-  end
-
-
-  def water_billing
-    @water_billing = WaterBillingRepository.new(params)
-    if params[:query].present?
-      @pagy, @water_billing = pagy((@water_billing.get_all))
-    else
-      @pagy, @water_billing = pagy((@water_billing.get_all))
-    end
-
   end
 
   # DELETE /subdivisions/1 or /subdivisions/1.json

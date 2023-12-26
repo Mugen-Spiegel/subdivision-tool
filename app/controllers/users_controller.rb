@@ -1,9 +1,11 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
+  # before_action :set_subdivision only: %i[ index ]
 
   # GET /users or /users.json
   def index
-    @users = User.includes(:address).all
+    @user_repository = UserRepository.new(params)
+    @users = @user_repository.search_user
   end
 
   # GET /users/1 or /users/1.json
@@ -38,7 +40,6 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       unless @user.nil?
-        @user
         format.html { redirect_to users_path(@user), notice: "User was successfully created." }
         format.json { render :show, status: :created, location: @user }
       else
@@ -82,9 +83,9 @@ class UsersController < ApplicationController
     end
 
 
-    def set_subdivision
-      @subdivision = Subdivision.find(params[:subdivision_id])
-    end
+    # def set_subdivision
+    #   @subdivision = Subdivision.find(params[:subdivision_id])
+    # end
     
     # Only allow a list of trusted parameters through.
     def user_params

@@ -1,5 +1,4 @@
 module ApplicationHelper
-    include Pagy::Frontend
 
     def sort_link(column:, label:)
         if column == params[:column]

@@ -1,10 +1,10 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["output"]
+  static targets = ["output", "searchForm"]
   connect() {
-    console.log( "asdasdsda")
-    this.fetch_water_bills()
+    // console.log( "asdasdsda")
+    // this.fetch_water_bills()
   }
   fetch_water_bills() {
     var url = window.location.href + "/water_billing"
@@ -15,4 +15,8 @@ export default class extends Controller {
       this.outputTarget.innerHTML = html
     })
   }
+
+  // search() {
+  //   this.searchFormTarget.requestSubmit()
+  // }
 }

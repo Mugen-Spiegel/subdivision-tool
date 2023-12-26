@@ -3,7 +3,8 @@ class WaterBillingsController < ApplicationController
 
   # GET /water_billings or /water_billings.json
   def index
-    @water_billings = WaterBilling.all
+    @water_billings = WaterBillingRepository.new(params)
+    @water_billings = @water_billings.search_water_billing
   end
 
   # GET /water_billings/1 or /water_billings/1.json
@@ -23,6 +24,16 @@ class WaterBillingsController < ApplicationController
   def create
     @water_billing =  WaterBillingRepository.new(water_billing_params)
     @water_billing.create
+
+    respond_to do |format|
+      unless @water_billing.nil?
+        format.html { redirect_to water_billings_path({subdivision_id: water_billing_params["subdivision_id"],}), notice: "Water Billing was successfully created." }
+        format.json { render :show, status: :created, location: @water_billing }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @water_billing.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # PATCH/PUT /water_billings/1 or /water_billings/1.json

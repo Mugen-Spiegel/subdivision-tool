@@ -1,4 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
+import { jsPDF } from "jspdf"
+import 'jspdf-autotable'
 
 export default class extends Controller {
   static targets = ["output", "inputCurrentReading", "searchForm", "updateForm"]
@@ -53,11 +55,41 @@ export default class extends Controller {
     })
     .then(() => {
       this.searchFormTarget.requestSubmit()
-      
     })
   }
 
+  printPdft() {
+    const doc = new jsPDF('landscape')
+    let water_bill_transaction_table = document.getElementById("water_bill_transaction_table")
+    let headers = Array.from(water_bill_transaction_table.getElementsByTagName("th")).map(function(e) {
+      return e.textContent.trim()
+    })
+    let table_row = Array.from(water_bill_transaction_table.getElementsByTagName("tr"))
+    table_row.shift()
+    let table_row_data = table_row.map(function(row) {
+      let data = Array.from(row.getElementsByTagName("td")).map(function(td){
+          return td.textContent.replace('₱','')
+      })
+      data.pop()
+      return data
+    })
+    headers.pop()
+    let footer = table_row_data[table_row_data.length - 1]
+    footer.unshift("")
+    footer.unshift("")
+    table_row_data[table_row_data.length - 1] = footer
+    console.log(table_row_data)
+    
+    doc.text((document.getElementById("subdivision_name").textContent + "-------YEAR: " + document.getElementById("year").value), 10, 10);
 
+    // doc.autoTable({ html: '#water_bill_transaction_table' })
+    doc.autoTable({
+      theme: 'grid',
+      head: [headers],
+      body: table_row_data
+    })
+    doc.save('table.pdf')
+  }
 
   getMetaValue(name) {
     const element = document.head.querySelector(`meta[name="${name}"]`)
