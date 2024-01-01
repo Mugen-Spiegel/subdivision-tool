@@ -1,0 +1,131 @@
+<%= turbo_frame_tag 'water_bill_search', target:"_top" do %>
+    <div class="card text-center">
+        <%= turbo_frame_tag 'water_bill_table', data: {turbo_frame: "_top", remote:"true"} do %>
+            <div class="card-body overflow-scroll table-responsive table-wrap">
+                    <table class="overflow-auto table-fixed table table-sm table-bordered table-hover table-inverse table-responsive table-bordered border-primary ">
+                        <thead class="thead-inverse|thead-default" style="position: sticky; top: 0;">
+                            <tr>
+                                <th  class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    MONTH
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    CURRENT READING
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    PREVIOUS READING
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    CONSUMPTION
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    NUMBER OF RESIDENCE
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    RESIDENCE PER CUBIC
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    MAYNILAD PAYABLE AMOUNT
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    PAID AMOUNT
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    BALANCE
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    METER IMAGE
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    MAYNILAD BILLING IMAGE
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    STATUS
+                                </th>
+                                <th class="text-left py-3 px-6 uppercase font-semibold text-sm hover:cursor-pointer">
+                                    ACTION
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700">
+                                <% water_billings.each do |bill| %>
+                                    <% (@total[:consumption] += bill.consumption) %>
+                                    <% (@total[:bill_amount] += bill.bill_amount) %>
+                                    <% (@total[:paid_amount] += bill.paid_amount) %>
+                                    <% (@total[:balance] += (bill.bill_amount - bill.paid_amount)) %>
+                                    <tr>
+                                        <td><%=Date::MONTHNAMES[bill.month]%></td>
+                                        <td><%=bill.mother_meter_current_reading %></td>
+                                        <td><%=bill.mother_meter_previous_reading %></td>
+                                        <td><%=bill.consumption %></td>
+                                        <td><%=bill.number_residence %></td>
+                                        <td><%=money_format(bill.per_cubic_price) %></td>
+                                        <td><%=money_format(bill.bill_amount) %></td>
+                                        <td><%=money_format(bill.paid_amount) %></td>
+                                        <td><%=money_format(bill.bill_amount - bill.paid_amount) %></td>
+                                        <td>
+                                            <label>
+                                                <% unless bill.photos.empty? %>
+                                                    <% if  bill.photos.first.name == "meter_image" %>
+                                                        <img src= <%= bill.photos.first.image_url%> alt="Meter Image" width="200" height="200">
+                                                    <% elsif bill.photos&.second&.name == "meter_image" %>
+                                                        <img src= <%= bill.photos.second.image_url%> alt="Meter Image" width="200" height="200">
+                                                    <% end %>
+                                                <% end %>
+                                                <% if bill.is_paid != WaterBillingTransaction::PAID %>
+                                                    <%= render "water_billing/form/upload_image", bill: bill, value: "meter_image"%>
+                                                <% end %>
+                                            </label> 
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <% unless bill.photos.empty? %>
+                                                    <% if  bill.photos.first.name == "maynilad_image" %>
+                                                        <img src= <%= bill.photos.first.image_url%> alt="Maynilad Billing Image" width="200" height="200">
+                                                    <% elsif bill.photos&.second&.name == "maynilad_image" %>
+                                                        <img src= <%= bill.photos.second.image_url%> alt="Maynilad Billing Image" width="200" height="200">
+                                                    <% end %>
+                                                <% end %>
+                                                <% if bill.is_paid != WaterBillingTransaction::PAID %>
+                                                    <%= render "water_billing/form/upload_image", bill: bill, value: "maynilad_image"%>
+                                                <% end %>
+                                            </label>
+                                        </td>
+                                        <td><%=bill.is_paid%></td>
+                                        <td>
+                                            <% if bill.is_paid != WaterBillingTransaction::PAID %>
+                                            
+                                                    <%= render "water_billing/modal/update_paid_amount", water_billing: bill %>
+                                                    <% if bill.is_paid != WaterBillingTransaction::PARTIAL %>
+                                                        <%= render "water_billing/modal/update_maynilad_billing", water_billing: bill %>
+                                                        <%= link_to 'Delete', water_billing_path(bill), {class: "btn btn-danger", data: {turbo_method: :delete, turbo_confirm: 'Are you sure?'}} %>
+                                                     <%end%>
+                                            <%end%>
+                                        </td>
+                                        
+                                    </tr>
+                                <% end %>
+                        </tbody>
+                        <%unless water_billings.empty?%>
+                                <tfoot>
+                                    <tr>
+                                        <td class="right" colspan="3">Total:</td>
+                                        <td class="right"><%=@total[:consumption]%></td>
+                                        <td class="right">N/A</td>
+                                        <td class="right">N/A</td>
+                                        <td class="right"><%=money_format(@total[:bill_amount])%></td>
+                                        <td class="right"><%=money_format(@total[:paid_amount]) %></td>
+                                        <td class="right"><%=money_format(@total[:balance]) %></td>
+                                        <td class="right">N/A</td>
+                                        <td class="right">N/A</td>
+                                        <td class="right"></td>
+                                    </tr>
+                                </tfoot>
+                            <%end%>
+                    </table>
+                   
+            </div>
+
+        
+        <% end %>
+    </div>
+<% end %>

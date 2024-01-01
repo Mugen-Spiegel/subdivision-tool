@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @water_billing %>
+
+<div>
+  <%= link_to "Edit this water billing", edit_water_billing_path(@water_billing) %> |
+  <%= link_to "Back to water billings", water_billing_path %>
+
+  <%= button_to "Destroy this water billing", @water_billing, method: :delete %>
+</div>

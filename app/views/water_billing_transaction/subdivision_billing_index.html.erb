@@ -1,0 +1,7 @@
+<div class="card text-center">
+    <%= turbo_frame_tag 'water_bill' do %>
+      <%= render "water_billings/form/search_form" %> 
+      <%= render "water_billings/modal/add_billing", water_billings: @water_billings %>
+      <%= render "water_billings/table/water_billing" , water_billings: @water_billings%> 
+      <% end %>
+</div>

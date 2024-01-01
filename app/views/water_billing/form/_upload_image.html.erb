@@ -1,0 +1,9 @@
+<%= turbo_frame_tag :water_bill_table do %>
+    <%= form_with(model:bill, url: upload_image_water_billing_path({id: bill.id}), method: :post, data: {turbo_frame: "water_bill_table", action: "WaterBilling#spinner"}  ) do |f| %>
+        <label for="image" class="form-label"> </label>
+        <%= f.file_field :image, {required: true, class: "form-control"} %>
+        <%= f.hidden_field :name, {value: value} %>
+        <%= f.hidden_field :id, {value: bill.id} %>
+        <%= f.submit "Upload", {class: "btn btn-primary"}  %>
+    <% end %>
+<% end %>

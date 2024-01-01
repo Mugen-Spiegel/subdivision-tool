@@ -1,0 +1,40 @@
+<div class="card-header form-row">
+        <%= form_with url: water_billing_transaction_index_path, method: :get, data: { WaterBillingTransactions_target: "searchForm", turbo_frame: "water_bill_transaction_search" }  do |form| %>
+            <div class="row">
+                <div class="col">
+                    <%= form.label :sort_by, "Sort By:" %>
+                    <%= form.select :sort_by, sort_column, {}, {class:"form-control"}%>
+                </div>
+                <div class="col">
+                    <%= form.label :year, "Year:" %>
+                    <%= form.select :year, year_list, {}, {class:"form-control"}%>
+                </div>
+                <div class="col">
+                    <%= form.label :month, "Month:" %>
+                    <%= form.select :month, month_list, {}, {class:"form-control"}%>
+                </div>
+                <div class="col">
+                    <%= form.label :status, "Status:" %>
+                    <%= form.select :status, status_list, {}, {class:"form-control"}%>
+                </div>
+                <div class="col">
+                    <%= form.label :street, "Street:" %>
+                    <%= form.select :street, street_list, {}, {class:"form-control"}%>
+                </div>
+                <div class="col">
+                    <%= form.label :first_name, "First Name:" %>
+                    <%= form.text_field :first_name , {class:"form-control", placeholder:"First Name"} %>
+                    <%= form.hidden_field :subdivision_id , {value: params["subdivision_id"]} %>
+                </div>
+                <div class="col">
+                    <%= form.label :last_name, "Last Name:" %>
+                    <%= form.text_field :last_name , {class:"form-control", placeholder:"Last Name"} %>
+                </div>
+                <%= form.submit "Search", {class:"btn btn-primary "} %>
+            </div>
+            <br>
+            <div class="row">
+                <button type="button" data-action="WaterBillingTransactions#printPdft" class="btn btn-primary float-end">Print</button>
+            </div>
+        <% end %>
+</div>

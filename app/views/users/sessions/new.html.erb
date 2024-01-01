@@ -1,0 +1,19 @@
+
+
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+<div class="container-lg text-center">
+    <h2>Log in</h2>
+    <div class="d-flex justify-content-center row g-3 align-items-center">
+      <div class="col-auto">
+        <%= f.label :email %><br />
+        <%= f.email_field :email, {class: "form-control", placeholder:"Enter email",autofocus: true, autocomplete:"email" }%>
+      </div>
+      <div class="col-auto">
+        <%= f.label :password %><br />
+        <%= f.password_field :password,  {class:"form-control", autocomplete: "current-password"} %>
+      </div>
+    <%= f.submit "Log in", {class:"btn btn-primary"} %>
+    <%= render "users/shared/links" %>
+    </div>
+  </div>
+<% end %>

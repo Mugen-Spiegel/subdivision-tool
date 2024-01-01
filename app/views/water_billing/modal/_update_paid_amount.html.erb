@@ -1,0 +1,29 @@
+        <!-- Button trigger modal -->
+<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#updateMotherMeterBill<%=water_billing.id%>">
+Update Payment
+</button>
+        <!-- Modal -->
+<div class="modal fade" id="updateMotherMeterBill<%=water_billing.id%>" tabindex="-1" aria-labelledby="updateMotherMeterBillLabel" aria-hidden="true">
+    <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mayniladBillingLabel">Water Billing</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <%= form_with(model:water_billing, url: water_billing_path({id: water_billing.id}), method: :put, data: {turbo_frame: "water_bill_search"}) do |form| %>
+                        <div class="row">
+                            <div class="col">
+                                <%= form.label :paid_amount, "Payment Amount:" %>
+                                <%= form.number_field :paid_amount , {class:"form-control", placeholder:"Maynilad Bill"} %>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <%= form.submit "Submit", {class:"btn btn-primary", data: {bs_dismiss:"modal"}} %>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+        </div>
+</div>
